@@ -35,3 +35,10 @@ Route::middleware(['auth', 'role:creator'])->group(function () {
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/customer/dashboard', function () {return view('customer.dashboard');});
 });
+
+
+// payments
+Route::get('/payments', 'PaymentController@index')->name('payments.index');
+Route::post('/payments', 'PaymentController@store')->name('payments.store');
+Route::put('/payments/{id}/verify', 'PaymentController@verify')->name('payments.verify');
+Route::put('/payments/{id}/reject', 'PaymentController@reject')->name('payments.reject');

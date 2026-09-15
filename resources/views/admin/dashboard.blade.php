@@ -96,9 +96,9 @@
                 <p class="card-text">
                     Memeriksa dan memverifikasi pembayaran.
                 </p>
-                <a href="#" class="btn btn-primary">
+            <a href="{{ route('payments.index') }}" class="btn btn-primary">
                     Kelola Payments
-                </a>
+            </a>
             </div>
         </div>
     </div>
