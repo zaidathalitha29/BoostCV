@@ -1,10 +1,6 @@
 <?php
 
 namespace App;
-use App\User;
-use App\Service;
-use App\Portfolio;
-use App\Order;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +8,13 @@ class Creator extends Model
 {
     protected $table = 'creators';
     protected $primaryKey = 'id';
-    protected $fillable = ['name', 'bio', 'phone', 'profile_photo'];
+
+    protected $fillable = [
+        'user_id',
+        'bio',
+        'phone',
+        'profile_photo',
+    ];
 
     public function user()
     {
@@ -31,6 +33,13 @@ class Creator extends Model
 
     public function orders()
     {
-        return $this->hasManyThrough(Order::class, Service::class,'creator_id','service_id','id','id');
+        return $this->hasManyThrough(
+            Order::class,
+            Service::class,
+            'creator_id',
+            'service_id',
+            'id',
+            'id'
+        );
     }
 }

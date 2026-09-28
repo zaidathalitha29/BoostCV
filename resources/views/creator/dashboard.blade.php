@@ -1,9 +1,7 @@
 @extends('layouts.app')
-
 @section('content')
 
 <div class="container-fluid">
-
 <div class="mb-4">
     <h1>Dashboard Creator</h1>
     <p class="text-muted">
@@ -22,7 +20,7 @@
                     Kelola informasi profil, bio, nomor telepon,
                     foto profil, dan pengalaman.
                 </p>
-                <a href="#" class="btn btn-primary">
+                <a href="{{ route('creator.edit', Auth::id()) }}" class="btn btn-primary">
                     Kelola Profil
                 </a>
             </div>
@@ -74,9 +72,6 @@
             </div>
         </div>
     </div>
-
 </div>
-
 </div>
-
 @endsection
