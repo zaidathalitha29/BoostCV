@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Category;
 
@@ -47,7 +48,7 @@ class CategoryController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('category.index');
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -58,7 +59,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return view('category.show', compact('category'));
     }
 
     /**
@@ -95,7 +98,7 @@ class CategoryController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('category.index');
+        return redirect()->route('admin.categories.index');
     }
 
     /**
@@ -106,9 +109,9 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::where('id', $id)->delete();
+        $category = Category::findOrFail($id);
+        $category->delete();
 
-        return redirect()->route('category.index');
+        return redirect()->route('admin.categories.index');
     }
 }
-```

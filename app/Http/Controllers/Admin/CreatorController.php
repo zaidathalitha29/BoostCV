@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Creator;
 use App\User;
@@ -17,6 +18,7 @@ class CreatorController extends Controller
     {
         $creators = Creator::all();
         $users = User::all();
+
         return view('creator.index', compact('creators', 'users'));
     }
 
@@ -28,6 +30,7 @@ class CreatorController extends Controller
     public function create()
     {
         $users = User::all();
+
         return view('creator.create', compact('users'));
     }
 
@@ -48,9 +51,9 @@ class CreatorController extends Controller
 
         $profilePhoto = null;
 
-        if ($request->hasFile('profile_photo')) 
-        {
-            $profilePhoto = $request->file('profile_photo')->store('profile_photos', 'public');
+        if ($request->hasFile('profile_photo')) {
+            $profilePhoto = $request->file('profile_photo')
+                ->store('profile_photos', 'public');
         }
 
         Creator::create([
@@ -60,7 +63,7 @@ class CreatorController extends Controller
             'profile_photo' => $profilePhoto,
         ]);
 
-        return redirect()->route('creator.index');
+        return redirect()->route('admin.creators.index');
     }
 
     /**
@@ -71,7 +74,9 @@ class CreatorController extends Controller
      */
     public function show($id)
     {
-        //
+        $creator = Creator::findOrFail($id);
+
+        return view('creator.show', compact('creator'));
     }
 
     /**
@@ -84,6 +89,7 @@ class CreatorController extends Controller
     {
         $creator = Creator::findOrFail($id);
         $users = User::all();
+
         return view('creator.edit', compact('creator', 'users'));
     }
 
@@ -112,13 +118,13 @@ class CreatorController extends Controller
         ];
 
         if ($request->hasFile('profile_photo')) {
-            $data['profile_photo'] = $request->file('profile_photo')->store('profile_photos', 'public');
+            $data['profile_photo'] = $request->file('profile_photo')
+                ->store('profile_photos', 'public');
         }
 
         $creator->update($data);
 
-
-        return redirect()->route('creator.index');
+        return redirect()->route('admin.creators.index');
     }
 
     /**
@@ -129,7 +135,10 @@ class CreatorController extends Controller
      */
     public function destroy($id)
     {
-        Creator::where('id', $id)->delete();
-        return redirect()->route('creator.index');
+        $creator = Creator::findOrFail($id);
+
+        $creator->delete();
+
+        return redirect()->route('admin.creators.index');
     }
 }
