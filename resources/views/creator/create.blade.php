@@ -11,7 +11,7 @@
                     <div class="mb-3">
                         <label for="user_id" class="form-label">User</label>
                         <select name="user_id" class="form-control">
-                            <option value="">Pilih User</option>
+                            <option value="">Pilih User</option>2
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
                                     {{ $user->name }}

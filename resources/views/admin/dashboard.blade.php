@@ -1,18 +1,13 @@
 @extends('layouts.app')
-
 @section('content')
-
 <div class="container-fluid">
-
 <div class="mb-4">
     <h1>Dashboard Admin</h1>
     <p class="text-muted">
         Selamat datang, {{ Auth::user()->name }}!
     </p>
 </div>
-
 <div class="row">
-
     {{-- Users --}}
     <div class="col-md-4 mb-4">
         <div class="card">
@@ -27,7 +22,6 @@
             </div>
         </div>
     </div>
-
     {{-- Categories --}}
     <div class="col-md-4 mb-4">
         <div class="card">
@@ -42,7 +36,6 @@
             </div>
         </div>
     </div>
-
     {{-- Creators --}}
     <div class="col-md-4 mb-4">
         <div class="card">
