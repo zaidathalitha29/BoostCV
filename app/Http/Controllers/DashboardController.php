@@ -9,13 +9,35 @@ class DashboardController extends Controller
         $role = auth()->user()->role;
 
         if ($role == 'admin') {
-            return redirect('/admin/dashboard');
+            return redirect()->route('admin.dashboard');
         }
 
         if ($role == 'creator') {
-            return redirect('/creator/dashboard');
+            return redirect()->route('creator.dashboard');
         }
 
-        return redirect('/customer/dashboard');
+        if ($role == 'customer') {
+            return redirect()->route('customer.dashboard');
+        }
+
+        abort(403);
+    }
+
+
+    public function admin()
+    {
+        return view('admin.dashboard');
+    }
+
+
+    public function creator()
+    {
+        return view('creator.dashboard');
+    }
+
+
+    public function customer()
+    {
+        return view('customer.dashboard');
     }
 }

@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\User;
 use Illuminate\Support\Facades\Hash;
+use App\User;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the users.
-     *
-     * @return \Illuminate\Http\Response
+     * Menampilkan semua user
      */
     public function index()
     {
@@ -22,9 +20,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new user.
-     *
-     * @return \Illuminate\Http\Response
+     * Menampilkan form tambah user
      */
     public function create()
     {
@@ -32,10 +28,7 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * Menyimpan user baru
      */
     public function store(Request $request)
     {
@@ -59,23 +52,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified user.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $user = User::findOrFail($id);
-
-        return view('admin.users.show', compact('user'));
-    }
-
-    /**
-     * Show the form for editing the specified user.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Menampilkan form edit user
      */
     public function edit($id)
     {
@@ -85,11 +62,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified user.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Memperbarui data user
      */
     public function update(Request $request, $id)
     {
@@ -98,22 +71,19 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|in:admin,creator,customer',
             'password' => 'nullable|string|min:8|confirmed',
+            'role' => 'required|in:admin,creator,customer',
         ]);
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-        ];
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
 
-        // Password hanya diubah jika diisi
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $user->password = Hash::make($request->password);
         }
 
-        $user->update($data);
+        $user->save();
 
         return redirect()
             ->route('admin.users.index')
@@ -121,20 +91,17 @@ class UserController extends Controller
     }
 
     /**
-     * Remove the specified user.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Menghapus user
      */
     public function destroy($id)
     {
         $user = User::findOrFail($id);
 
-        // Mencegah admin menghapus dirinya sendiri
+        // Mencegah admin menghapus akun sendiri
         if ($user->id == auth()->id()) {
             return redirect()
                 ->route('admin.users.index')
-                ->with('error', 'Kamu tidak dapat menghapus akun sendiri.');
+                ->with('error', 'Akun yang sedang digunakan tidak dapat dihapus.');
         }
 
         $user->delete();
